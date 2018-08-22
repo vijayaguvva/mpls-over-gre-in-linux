@@ -11,18 +11,20 @@ has support to configure MPLS and ipip tunnels.
 
 On system A:
 
-    $ ifconfig eth0 192.168.1.1/24
+    $ ip addr add dev eth0 192.168.1.1/24
     $ ip tun add gre-tun mode gre remote 192.168.1.2 local 192.168.1.1
-    $ ifconfig gre-tun 10.1.1.1/24
+    $ ip addr add dev gre-tun 10.1.1.1/24
     $ ip route change 10.1.1.0/24 encap mpls 100 dev gre-tun
     $ ip -f mpls route add 200 dev lo
+    
     $ sysctl -w net.mpls.conf.gre-tun.input=1
 
 On System B:
 
-    $ ifconfig eth0 192.168.1.2/24
+    $ ip addr add dev eth0 192.168.1.2/24
     $ ip tun add gre-tun mode gre remote 192.168.1.1 local 192.168.1.2
-    $ ifconfig gre-tun 10.1.1.2/24
+    $ ip addr add dev gre-tun 10.1.1.2/24
     $ ip route change 10.1.1.0/24 encap mpls 200 dev gre-tun
     $ ip -f mpls route add 100 dev lo
+    
     $ sysctl -w net.mpls.conf.gre-tun.input=1
